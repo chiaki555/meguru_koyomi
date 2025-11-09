@@ -128,7 +128,6 @@
 ### 言語
 - Ruby
 - JavaScript
-
 ### フレームワーク
 - Ruby on Rails
 - Bootstrap
@@ -139,11 +138,11 @@
 ### Gemやライブラリ
 - MVP
   - カレンダー：Fullcalendar、Modal、holiday_jp
+  - 画像アップロード：ActiveStorage、Google Cloud Storage
 - 本リリース
   - カレンダー：Swiper
   - スポットマップ：Google Maps API
   - ユーザー認証：Devise
-  - 画像アップロード：ActiveStorage、Google Cloud Storage
   - LINE通知：line-bot-api
 - 今後の課題
   - 生体認証：WebAuthn
