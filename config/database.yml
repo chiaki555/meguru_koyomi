@@ -106,4 +106,5 @@ production:
 #    migrations_paths: db/cable_migrate
 
 # 手動で追加
+  <<: *default
   url: <%= ENV['DATABASE_URL'] %>
