@@ -1,2 +1,5 @@
 @import 'bootstrap/scss/bootstrap';
 @import 'bootstrap-icons/font/bootstrap-icons';
+// 手動で追記
+@import "@fullcalendar/core/main.css";
+@import "@fullcalendar/daygrid/main.css";
