@@ -25,6 +25,7 @@ services: # コンテナの定義開始
     # - rails db:prepare: DBの準備
     # - サーバープロセスIDファイルの削除
     # - 開発サーバーの起動
+    # command: bash -c "bundle install && bundle exec rails db:prepare && rm -f tmp/pids/server.pid && bundle exec rails server --binding=0.0.0.0 --port=3000"
 
     tty: true # 疑似ターミナルを割り当て
     stdin_open: true # 標準入力を保持
@@ -44,4 +45,3 @@ volumes: # ボリュームの定義
   bundle_data: # gemデータの永続化用ボリューム
   postgresql_data: # PostgreSQLデータの永続化用ボリューム
   node_modules: # Node.jsパッケージの永続化用ボリューム
-  

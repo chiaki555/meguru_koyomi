@@ -75,4 +75,5 @@ group :development do
   # 手動で追加
   gem "better_errors"
   gem "binding_of_caller"
+  gem "foreman"
 end
