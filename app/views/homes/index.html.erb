@@ -1,5 +1,6 @@
-<main>
-  <h1>Homes#index</h1>
-  <div id="calendar" data-controller="calendar"></div>
-    <p>Find me in app/views/homes/index.html.erb</p>
-</main>
+<div id="calendar" data-controller="calendar"></div>
+
+<!-- モーダル関連 -->
+<%= render "modals/modal", modal_id: "seasonalBathModal", title: "季節湯名" do %>
+  <%= render "modals/seasonal_bath/main" %>
+<% end %>
