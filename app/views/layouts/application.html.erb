@@ -24,8 +24,19 @@
   </head>
 
   <body>
-    <%= render "layouts/header" %>
-    <%= render "layouts/sidebar" %>
-    <%= yield %>
+    <header>
+      <%= render "layouts/header" %>
+    </header>
+
+    <div class="container-fluid">
+      <div class="row">
+        <aside class="col-1">
+          <%= render "layouts/sidebar" %>
+        </aside>
+        <main class="col-11">
+          <%= yield %>
+        </main>
+      </div>
+    </div>
   </body>
 </html>
