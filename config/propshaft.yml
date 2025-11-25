@@ -1,0 +1,6 @@
+development:
+  compile: true
+  digest: true   # キャッシュ破壊
+
+production:
+  digest: true   # 本番環境では必須
