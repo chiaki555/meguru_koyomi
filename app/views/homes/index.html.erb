@@ -1,13 +1,13 @@
 <div id="calendar" data-controller="calendar"></div>
 
 <!-- モーダル関連 -->
-<%= render "modals/modal", modal_id: "seasonalBathModal", title: "季節湯名" do %>
+<%= render "modals/modal", modal_id: "seasonalBathModal" do %>
   <%= render "modals/seasonal_bath/body" do %>
     <%= render "modals/seasonal_bath/main" %>
   <% end %>
 <% end %>
 
-<%= render "modals/modal", modal_id: "eventModal", title: "行事名" do %>
+<%= render "modals/modal", modal_id: "eventModal" do %>
   <%= render "modals/event/body" do %>
     <%= render "modals/event/main" %>
   <% end %>

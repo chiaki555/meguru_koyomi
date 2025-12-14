@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2025_11_25_055738) do
+ActiveRecord::Schema[8.1].define(version: 2025_12_07_054255) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -42,6 +42,26 @@ ActiveRecord::Schema[8.1].define(version: 2025_11_25_055738) do
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
+  create_table "seasonal_bath_templates", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.integer "date_type"
+    t.integer "day"
+    t.text "description"
+    t.integer "month"
+    t.string "name"
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "seasonal_baths", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.date "date"
+    t.bigint "seasonal_bath_template_id", null: false
+    t.datetime "updated_at", null: false
+    t.integer "year"
+    t.index ["seasonal_bath_template_id"], name: "index_seasonal_baths_on_seasonal_bath_template_id"
+  end
+
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "seasonal_baths", "seasonal_bath_templates"
 end
