@@ -1,5 +1,9 @@
 Rails.application.routes.draw do
   root "homes#index"
+
+  # Stimulus から JSON を取得するための /homes
+  resources :homes, only: [:index]
+
   # get "homes/index"
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
