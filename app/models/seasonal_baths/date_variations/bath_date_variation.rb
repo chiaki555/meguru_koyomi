@@ -1,4 +1,4 @@
-require 'date'
+require "date"
 
 module SeasonalBaths
   module DateVariations

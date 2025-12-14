@@ -22,7 +22,7 @@ module SeasonalBaths
             description: bath.bath_description.to_s,
             thumbnailUrl: bath.thumbnail_url,
             iconUrl: bath.icon_url,
-            modalId: "seasonalBathModal",
+            modalId: "seasonalBathModal"
           }
         }
       end

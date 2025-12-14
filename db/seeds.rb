@@ -38,7 +38,7 @@ templates = [
       蓬（よもぎ）の葉を使うハーブ系の香りでリラックス効果のあるお風呂です。
       蓬はその強い香りや生命力から「魔除け」「厄除け」「無病息災」「子孫繁栄」の縁起物とされています。
     TEXT
-  },
+  }
 ]
 
 templates.each do |attrs|
@@ -48,7 +48,7 @@ templates.each do |attrs|
 end
 
 # 西暦を追加可能
-years = [2025, 2026, 2027]
+years = [ 2025, 2026, 2027 ]
 
 fixed_templates = SeasonalBaths::SeasonalBathTemplate.where(date_type: :fixed)
 
