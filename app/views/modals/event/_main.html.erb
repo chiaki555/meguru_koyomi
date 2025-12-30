@@ -1,27 +1,22 @@
 <div class="row align-items-start">
   <div class="col-6">
-    <%= image_tag "https://placehold.jp/150x150.png", alt: "行事のイメージ画像", class: "img-fluid" %>
+    <img class="img-fluid js-event-thumbnail d-none" />
   </div>
   <div class="col-6">
     <h4>概要</h4>
-    <p>子どもの健やかな成長を祝う行事です</p>
+    <p class="js-modal-description"></p>
   </div>
 
   <div class="col-6">
-    <%= image_tag "https://placehold.jp/150x150.png", alt: "行事食のイメージ画像", class: "img-fluid" %>
+    <img class="img-fluid js-food-thumbnail d-none" />
   </div>
   <div class="col-6">
     <h4>行事食</h4>
-    <ul>
-      <li>千歳飴</li>
-    </ul>
+    <ul class="js-modal-foods"></ul>
   </div>
 
-  <div class="col-6">
-    <%= image_tag "https://placehold.jp/150x150.png", alt: "おすすめスポットのイメージ画像", class: "img-fluid" %>
-  </div>
-  <div class="col-6">
-  <h4>おすすめスポット</h4>
-  <p>氏神様</p>
+  <div class="col-12">
+    <h4>おすすめスポット</h4>
+    <ul class="js-modal-spots"></ul>
   </div>
 </div>
