@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2025_12_07_054255) do
+ActiveRecord::Schema[8.1].define(version: 2025_12_14_090415) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -42,6 +42,46 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_07_054255) do
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
+  create_table "event_foods", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.bigint "event_id", null: false
+    t.string "name"
+    t.datetime "updated_at", null: false
+    t.index ["event_id", "name"], name: "index_event_foods_on_event_id_and_name", unique: true
+    t.index ["event_id"], name: "index_event_foods_on_event_id"
+  end
+
+  create_table "event_templates", force: :cascade do |t|
+    t.integer "area_type"
+    t.datetime "created_at", null: false
+    t.integer "date_type"
+    t.integer "day"
+    t.text "description"
+    t.integer "month"
+    t.string "name"
+    t.integer "source_type"
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "events", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.date "date"
+    t.bigint "event_template_id", null: false
+    t.datetime "updated_at", null: false
+    t.integer "year"
+    t.index ["event_template_id"], name: "index_events_on_event_template_id"
+  end
+
+  create_table "recommended_spots", force: :cascade do |t|
+    t.string "address"
+    t.datetime "created_at", null: false
+    t.bigint "event_id", null: false
+    t.string "name"
+    t.string "spot_url"
+    t.datetime "updated_at", null: false
+    t.index ["event_id"], name: "index_recommended_spots_on_event_id"
+  end
+
   create_table "seasonal_bath_templates", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.integer "date_type"
@@ -63,5 +103,8 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_07_054255) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "event_foods", "events"
+  add_foreign_key "events", "event_templates"
+  add_foreign_key "recommended_spots", "events"
   add_foreign_key "seasonal_baths", "seasonal_bath_templates"
 end
