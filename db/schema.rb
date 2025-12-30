@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2025_12_14_090415) do
+ActiveRecord::Schema[8.1].define(version: 2025_12_22_114728) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -44,11 +44,25 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_14_090415) do
 
   create_table "event_foods", force: :cascade do |t|
     t.datetime "created_at", null: false
-    t.bigint "event_id", null: false
     t.string "name"
     t.datetime "updated_at", null: false
-    t.index ["event_id", "name"], name: "index_event_foods_on_event_id_and_name", unique: true
-    t.index ["event_id"], name: "index_event_foods_on_event_id"
+    t.index ["name"], name: "index_event_foods_on_name", unique: true
+  end
+
+  create_table "event_template_foods", force: :cascade do |t|
+    t.bigint "event_food_id", null: false
+    t.bigint "event_template_id", null: false
+    t.index ["event_food_id"], name: "index_event_template_foods_on_event_food_id"
+    t.index ["event_template_id", "event_food_id"], name: "idx_on_event_template_id_event_food_id_ecdcf5819e", unique: true
+    t.index ["event_template_id"], name: "index_event_template_foods_on_event_template_id"
+  end
+
+  create_table "event_template_spots", force: :cascade do |t|
+    t.bigint "event_template_id", null: false
+    t.bigint "recommended_spot_id", null: false
+    t.index ["event_template_id", "recommended_spot_id"], name: "idx_on_event_template_id_recommended_spot_id_c32efd685e", unique: true
+    t.index ["event_template_id"], name: "index_event_template_spots_on_event_template_id"
+    t.index ["recommended_spot_id"], name: "index_event_template_spots_on_recommended_spot_id"
   end
 
   create_table "event_templates", force: :cascade do |t|
@@ -75,11 +89,10 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_14_090415) do
   create_table "recommended_spots", force: :cascade do |t|
     t.string "address"
     t.datetime "created_at", null: false
-    t.bigint "event_id", null: false
     t.string "name"
-    t.string "spot_url"
     t.datetime "updated_at", null: false
-    t.index ["event_id"], name: "index_recommended_spots_on_event_id"
+    t.string "url"
+    t.index ["url"], name: "index_recommended_spots_on_url", unique: true
   end
 
   create_table "seasonal_bath_templates", force: :cascade do |t|
@@ -103,8 +116,10 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_14_090415) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
-  add_foreign_key "event_foods", "events"
+  add_foreign_key "event_template_foods", "event_foods"
+  add_foreign_key "event_template_foods", "event_templates"
+  add_foreign_key "event_template_spots", "event_templates"
+  add_foreign_key "event_template_spots", "recommended_spots"
   add_foreign_key "events", "event_templates"
-  add_foreign_key "recommended_spots", "events"
   add_foreign_key "seasonal_baths", "seasonal_bath_templates"
 end
