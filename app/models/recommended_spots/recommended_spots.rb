@@ -28,9 +28,9 @@ module RecommendedSpots
     private
 
     def unique
-      @event_template_spots.uniq { |ets|
-        ets.recommended_spot.spot_url.to_s.presence ||
-        ets.recommended_spot.name
+      @spots.uniq { |spot|
+        spot.spot_url.to_s.presence ||
+        spot.name
       }
     end
   end

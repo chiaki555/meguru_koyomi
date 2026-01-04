@@ -21,5 +21,14 @@ module RecommendedSpots
 
       "https://placehold.jp/80x80.png"
     end
+
+    def for_modal
+      {
+        name: name,
+        url: spot_url,
+        image_url: recommended_spot_thumbnail&.url,
+        placeholder: false
+      }
+      end
   end
 end
