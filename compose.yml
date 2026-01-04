@@ -20,13 +20,12 @@ services: # コンテナの定義開始
       context: .  # ビルドコンテキストはカレントディレクトリ
       dockerfile: Dockerfile.dev # 開発用Dockerfileを使用
     # command: bash
-    command: bash -c "bundle install && bundle exec rails db:prepare && rm -f tmp/pids/server.pid && ./bin/dev"
+    command: bash -c "bundle install && bundle exec rails db:prepare && rm -f tmp/pids/server.pid && bundle exec rails server -b 0.0.0.0 -p 3000"
     # ↑ サーバー起動時のコマンド：
     # - bundle install: 必要なgemをインストール
     # - rails db:prepare: DBの準備
     # - サーバープロセスIDファイルの削除
     # - 開発サーバーの起動
-    # command: bash -c "bundle install && bundle exec rails db:prepare && rm -f tmp/pids/server.pid && bundle exec rails server --binding=0.0.0.0 --port=3000"
 
     tty: true # 疑似ターミナルを割り当て
     stdin_open: true # 標準入力を保持
@@ -36,6 +35,7 @@ services: # コンテナの定義開始
       - node_modules:/myapp/node_modules # node_modulesの永続化
     environment: # 環境変数の設定
       TZ: Asia/Tokyo # タイムゾーンを日本に設定
+      GOOGLE_APPLICATION_CREDENTIALS_JSON: ${GOOGLE_APPLICATION_CREDENTIALS_JSON}
     ports: # ポート設定
       - "3000:3000" # Rails標準のポート
     depends_on: # 依存関係の設定
