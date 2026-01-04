@@ -13,7 +13,7 @@ module EventTemplates
       private
 
       def validate!
-        raise ArgumentError, "概要は 300 文字以内にしてください" if @value.length > 300
+        raise ArgumentError, "概要は 500 文字以内にしてください" if @value.length > 500
       end
     end
   end

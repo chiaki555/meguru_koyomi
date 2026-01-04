@@ -14,14 +14,15 @@ module Events
       map do |event|
         {
           title: event.event_name.to_s,
-          start: event.date.iso8601,
+          start: event.event_date.iso8601,
           extendedProps: {
             type: type,
+            event_template_id: event.event_template_id,
             description: event.event_description.to_s,
-            event_thumbnail_url: event.thumbnail_url,
-            event_foods: event.foods.for_modal,
-            recommended_spots: event.spots.for_modal,
-            event_icon_url: event.icon_url,
+            thumbnail_url: event.thumbnail_url,
+            foods: event.foods.for_modal,
+            spots: event.spots.for_modal,
+            icon_url: event.icon_url,
             modalId: "eventModal"
           }
         }

@@ -15,37 +15,34 @@ module Events
     end
 
     # カレンダー表示用（固定日は year 追加）
-    def date
+    def event_date
+      # すでに date があればそれを最優先
+      return self[:date] if self[:date].present?
+
+      # なければテンプレから生成
       event_template
-        .event_date_variation(self[:date])
+        .event_date_variation(nil)
         .to_date(year)
     end
 
     # 行事食関連の取得
     def foods
-      ::EventFoods::EventFoods.new(event_foods)
+      ::EventFoods::EventFoods.new(event_template.event_foods)
     end
 
     # おすすめスポット関連の取得
     def spots
-      ::RecommendedSpots::RecommendedSpots.new(recommended_spots)
+      ::RecommendedSpots::RecommendedSpots.new(event_template.recommended_spots)
     end
 
-    # サムネイル（デフォルトあり）
+    # サムネイル（templateより）
     def thumbnail_url
-      thumbnail = event_template&.event_thumbnail
-
-      return url_for(thumbnail) if thumbnail&.attached?
-      "https://placehold.jp/80x80.png"
+      event_template.thumbnail_url
     end
 
-    # アイコン（デフォルトなし）
+    # アイコン（templateより）
     def icon_url
-      first_icon = event_template&.event_icons&.first
-
-      return url_for(first_icon) if first_icon&.attached?
-
-      nil
+      event_template&.icon_url
     end
   end
 end

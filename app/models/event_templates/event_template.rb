@@ -1,5 +1,7 @@
 module EventTemplates
   class EventTemplate < ApplicationRecord
+    include Rails.application.routes.url_helpers
+
     has_many :events, dependent: :destroy, class_name: "::Events::Event"
 
     # 中間テーブル
@@ -39,6 +41,19 @@ module EventTemplates
     # 固定日か変動日か
     def event_date_variation(variable_date)
       fixed_variation || variable_variation(variable_date)
+    end
+
+    # サムネイル（デフォルトあり）
+    def thumbnail_url
+      return url_for(event_thumbnail) if event_thumbnail.attached?
+
+      "https://placehold.jp/80x80.png"
+    end
+
+    # アイコン（デフォルトなし）
+    def icon_url
+      icon = event_icons.first
+      url_for(icon) if icon&.attached?
     end
 
     private
