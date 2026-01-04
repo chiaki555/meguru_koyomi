@@ -10,7 +10,7 @@ module SeasonalBaths
 
       # 実際の Date 型で返す
       def to_date(year)
-        Date.new(year, @month.to_i, @day.to_i)
+        Date.new(year.to_i, @month.to_i, @day.to_i)
       end
     end
   end

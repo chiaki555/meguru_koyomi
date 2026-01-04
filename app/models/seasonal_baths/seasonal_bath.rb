@@ -28,25 +28,29 @@ module SeasonalBaths
     end
 
     # カレンダー表示用（固定日は year 追加）
+    # def bath_date
+    #   variation = bath_date_variation
+    #   variation.to_date(self.year)
+    # end
+
     def bath_date
-      variation = bath_date_variation
-      variation.to_date(self.year)
+      # すでに date があればそれを最優先
+      return self[:date] if self[:date].present?
+
+      # なければテンプレから生成
+      seasonal_bath_template
+        .bath_date_variation(nil)
+        .to_date(year)
     end
 
-    # サムネイル（デフォルトあり）
+    # サムネイル（templateより）
     def thumbnail_url
-      thumbnail = seasonal_bath_template&.bath_thumbnail
-
-     return url_for(thumbnail) if thumbnail&.attached?
-      "https://placehold.jp/100x100.png"
+      seasonal_bath_template.thumbnail_url
     end
 
-    # アイコン（デフォルトなし）
+    # アイコン（templateより）
     def icon_url
-      first_icon = seasonal_bath_template&.bath_icons&.first
-      return url_for(first_icon) if first_icon&.attached?
-
-      nil
+      seasonal_bath_template&.icon_url
     end
   end
 end
