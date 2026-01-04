@@ -8,8 +8,7 @@ import * as bootstrap from "bootstrap"
 
 export default class extends Controller {
   connect() {
-    console.log("Stimulus: calendar controller connected!")
-
+    console.log("🔥 calendar_controller.js LOADED 🔥")
     // 既存カレンダーがあれば破棄
     if (this.calendar) {
       this.calendar.destroy()
@@ -26,15 +25,12 @@ export default class extends Controller {
       timeZone: "local",
       events: this.fetchEvents.bind(this),
       datesSet: () => this.updateSidebar(),
-      eventClick: (info) => this.openModalFromEvent(info.event),  // ← ここで呼ぶだけ
-
+      eventClick: (info) => this.openModalFromEvent(info.event),
       eventContent: (arg) => {
-        const iconUrl = arg.event.extendedProps.event_icon_url
+        const iconUrl = arg.event.extendedProps.icon_url
         const title = arg.event.title
 
-        if (!iconUrl) {
-          return { html: `<span>${title}</span>` }
-        }
+        if (!iconUrl) return { html: `<span>${title}</span>` }
 
         return {
           html: `
@@ -50,60 +46,53 @@ export default class extends Controller {
     this.calendar.render()
   }
 
-  // サイドバー統合
+  // サイドバー更新
   updateSidebar() {
+    console.log("updateSidebar called")
     this.updateMonthlyBaths()
     this.updateTodayOrNextEvent()
   }
 
-  // サイドバー：今月の季節湯
+  // 今月の季節湯リスト
   updateMonthlyBaths() {
     const list = document.querySelector(".js-monthly-baths")
     if (!list) return
-
     list.innerHTML = ""
 
-    // カレンダーが表示している月を取得
     const viewDate = this.calendar.getDate()
     const year = viewDate.getFullYear()
     const month = viewDate.getMonth()
 
     const baths = this.calendar.getEvents().filter(event => {
-      if (event.extendedProps.type !== "bath") return false
-
-      const date = event.start
-      return date.getFullYear() === year && date.getMonth() === month
+      return event.extendedProps.type === "bath" &&
+             event.start.getFullYear() === year &&
+             event.start.getMonth() === month
     })
 
     baths.forEach(event => {
       const li = document.createElement("li")
-
       const a = document.createElement("a")
       a.href = "#"
 
-      // アイコンがあれば表示
-      if (event.extendedProps.event_icon_url) {
+      // アイコン表示
+      if (event.extendedProps.icon_url) {
         const img = document.createElement("img")
-        img.src = event.extendedProps.event_icon_url
+        img.src = event.extendedProps.icon_url
         img.classList.add("me-1")
         img.style.width = "16px"
         img.style.height = "16px"
         img.style.verticalAlign = "middle"
-
         a.appendChild(img)
       }
 
-      // 季節湯名
       const span = document.createElement("span")
       span.textContent = event.title
-
       a.appendChild(span)
       a.classList.add("small")
 
-      // サイドバーのリンクからもモーダルを開く
       a.addEventListener("click", e => {
-      e.preventDefault()
-      this.openModalFromEvent(event)
+        e.preventDefault()
+        this.openModalFromEvent(event)
       })
 
       li.appendChild(a)
@@ -111,45 +100,45 @@ export default class extends Controller {
     })
   }
 
-  // サイドバー：今日 or 次の行事
+  // 今日 or 次の行事
   updateTodayOrNextEvent() {
     const label = document.querySelector(".js-event-label")
     const list = document.querySelector(".js-event-title")
     if (!label || !list) return
-
     list.innerHTML = ""
 
     const today = new Date()
     today.setHours(0, 0, 0, 0)
 
-    const events = this.calendar
-      .getEvents()
+    const events = this.calendar.getEvents()
       .filter(e => e.extendedProps.type === "event")
       .sort((a, b) => a.start - b.start)
 
-    // 今日の行事（複数）
     const todayEvents = events.filter(e => {
       const d = new Date(e.start)
       d.setHours(0, 0, 0, 0)
       return d.getTime() === today.getTime()
     })
 
-    let targetEvents = []
+    const uniqByTemplate = events => {
+      const map = new Map()
+      events.forEach(e => {
+        const key = e.extendedProps.event_template_id
+        if (!map.has(key)) map.set(key, e)
+      })
+      return Array.from(map.values())
+    }
 
+    let targetEvents = []
     if (todayEvents.length > 0) {
       label.textContent = "今日の行事"
       targetEvents = todayEvents
     } else {
-      // 次に来る日付を探す
       const nextEvent = events.find(e => e.start > today)
       if (!nextEvent) return
-
       const nextDate = new Date(nextEvent.start)
       nextDate.setHours(0, 0, 0, 0)
-
       label.textContent = "次の行事"
-
-      // 同じ日の行事を全部取得
       targetEvents = events.filter(e => {
         const d = new Date(e.start)
         d.setHours(0, 0, 0, 0)
@@ -157,28 +146,25 @@ export default class extends Controller {
       })
     }
 
-    // 複数描画
+    targetEvents = uniqByTemplate(targetEvents)
+
     targetEvents.forEach(event => {
       const li = document.createElement("li")
       const a = document.createElement("a")
       a.href = "#"
 
-      // アイコンがあれば表示
-      if (event.extendedProps.event_icon_url) {
+      if (event.extendedProps.icon_url) {
         const img = document.createElement("img")
-        img.src = event.extendedProps.event_icon_url
+        img.src = event.extendedProps.icon_url
         img.classList.add("me-1")
         img.style.width = "16px"
         img.style.height = "16px"
         img.style.verticalAlign = "middle"
-
         a.appendChild(img)
       }
 
-      // 行事名
       const span = document.createElement("span")
       span.textContent = event.title
-
       a.appendChild(span)
 
       a.addEventListener("click", e => {
@@ -191,81 +177,121 @@ export default class extends Controller {
     })
   }
 
+  // データ取得
   async fetchEvents(info, successCallback, failureCallback) {
     try {
+      console.log("fetchEvents start")
       const res = await fetch("/homes.json")
       const data = await res.json()
+      console.log("fetchEvents start")
       successCallback(data)
+
+      // イベント取得後にサイドバー更新
+      this.updateSidebar()
     } catch (e) {
       failureCallback(e)
     }
   }
 
-  // モーダルを開く処理メソッド
-  openModalFromEvent(event) {
+  // モーダルを開く
+  openModalFromEvent(event) {   
+    console.log("event object:", event)
+    console.log("extendedProps:", event.extendedProps)
+    console.log("foods:", event.extendedProps?.foods)
+    console.log("spots:", event.extendedProps?.spots)
+ 
     const modal = document.getElementById(event.extendedProps.modalId)
     if (!modal) return
 
-    modal.querySelector(".js-modal-title").textContent = event.title
-    modal.querySelector(".js-modal-description").textContent =
-      event.extendedProps.description
+    const body = modal.querySelector(".js-event-body")
+    if (body) body.classList.remove("d-none")
 
-    // 行事サムネイル
-    const eventThumb = modal.querySelector(".js-event-thumbnail")
-    if (eventThumb) {
-      eventThumb.src = event.extendedProps.event_thumbnail_url
-      eventThumb.classList.remove("d-none")
-    }
+    // タイトル
+    const titleEl = modal.querySelector(".js-modal-title")
+    if (titleEl) titleEl.textContent = event.title
 
-    // 行事食
-    const foodsEl = modal.querySelector(".js-modal-foods")
-    foodsEl.innerHTML = ""
-    ;(event.extendedProps.event_foods || []).forEach(food => {
-      const li = document.createElement("li")
+    // 概要
+    const desc = modal.querySelector(".js-modal-description")
+    if (desc) desc.textContent = event.extendedProps.description || ""
 
-      const img = document.createElement("img")
-      img.src = food.thumbnail_url
-      img.classList.add("img-fluid", "me-2")
-
-      const span = document.createElement("span")
-      span.textContent = food.name
-
-      li.appendChild(img)
-      li.appendChild(span)
-      foodsEl.appendChild(li)
-    })
-
-    // おすすめスポット
-    const spotsEl = modal.querySelector(".js-modal-spots")
-    spotsEl.innerHTML = ""
-
-    ;(event.extendedProps.recommended_spots || []).forEach(spot => {
-      const li = document.createElement("li")
-
-      if (spot.image_url) {
-        const img = document.createElement("img")
-        img.src = spot.image_url
-        img.classList.add("img-fluid", "me-2")
-        li.appendChild(img)
+    // 行事
+    if (event.extendedProps.type === "event") {
+      const thumb = modal.querySelector(".js-event-thumbnail")
+      if (thumb) {
+        thumb.src = event.extendedProps.thumbnail_url
+        thumb.classList.add("modal-event-thumbnail")
+        thumb.classList.remove("d-none")
       }
 
-      const span = document.createElement("span")
-      span.textContent = spot.name
-      li.appendChild(span)
+      // 行事食
+      const foodsEl = modal.querySelector(".js-modal-foods")
+      if (foodsEl) {
+        foodsEl.innerHTML = "";
+        (event.extendedProps.foods || []).forEach(food => {
+          const item = document.createElement("div")
+          item.className = "d-flex align-items-center"
 
-      spotsEl.appendChild(li)
-    })
+          // 左：画像
+          const img = document.createElement("img")
+          img.src = food.thumbnail_url
+          img.classList.add("modal-food-thumbnail")
+
+          // 右：名前
+          const text = document.createElement("p")
+          text.textContent = food.name
+
+          item.appendChild(img)
+          item.appendChild(text)
+
+          foodsEl.appendChild(item)
+        })
+      }
+
+      // おすすめスポット
+      const spotsEl = modal.querySelector(".js-modal-spots")
+      if (spotsEl) {
+        spotsEl.innerHTML = "";
+        (event.extendedProps.spots || []).forEach(spot => {
+          const item = document.createElement("div")
+          item.className = "d-flex align-items-center"
+
+          // 左: 画像
+          const img = document.createElement("img")
+          img.src = spot.image_url
+          img.classList.add("modal-spot-thumbnail")
+
+          // 右: 名前
+          const text = document.createElement("p")
+          text.textContent = spot.name
+
+          item.appendChild(img)
+          item.appendChild(text)
+
+          spotsEl.appendChild(item)
+        })
+      }
+    }
+
+    // 季節湯
+    if (event.extendedProps.type === "bath") {
+      const thumb = modal.querySelector(".js-modal-thumbnail")
+      if (thumb) {
+        thumb.src = event.extendedProps.thumbnail_url
+        thumb.classList.add("modal-bath-thumbnail")
+        thumb.classList.remove("d-none")
+      }
+    }
 
     bootstrap.Modal.getOrCreateInstance(modal).show()
   }
 
-  // 外部からイベント一覧を取得するメソッド
+  // 外部からイベント一覧取得
   getEvents() {
     if (!this.calendar) return []
     return this.calendar.getEvents()
   }
 
-  // 外部から日付を変更するメソッド
+  // 外部から日付移動
   goToDate(dateStr) {
     if (!this.calendar) return
     this.calendar.gotoDate(dateStr)
