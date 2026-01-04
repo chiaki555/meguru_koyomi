@@ -25,6 +25,10 @@ Rails.application.configure do
   # config.active_storage.service = :local
   config.active_storage.service = :google_prod
 
+  config.action_controller.default_url_options = {
+  host: "https://meguru-koyomi-mi4y.onrender.com/"
+}
+
   # Assume all access to the app is happening through a SSL-terminating reverse proxy.
   # config.assume_ssl = true
 

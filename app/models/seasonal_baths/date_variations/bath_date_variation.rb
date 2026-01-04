@@ -3,8 +3,9 @@ require "date"
 module SeasonalBaths
   module DateVariations
     class BathDateVariation
-      def to_date(year)
-        raise NotImplementedError
+      def self.build(template:, date:)
+        return BathVariableDateVariation.new(date) if date.present?
+        BathFixedDateVariation.new(template.month, template.day)
       end
     end
   end

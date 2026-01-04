@@ -1,0 +1,13 @@
+module EventFoods
+  module ValueObjects
+    class FoodName
+      def initialize(value)
+        @value = value.to_s.strip
+      end
+
+      def to_s
+        @value
+      end
+    end
+  end
+end

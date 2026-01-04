@@ -20,8 +20,8 @@ module SeasonalBaths
           extendedProps: {
             type: "bath",
             description: bath.bath_description.to_s,
-            thumbnailUrl: bath.thumbnail_url,
-            iconUrl: bath.icon_url,
+            thumbnail_url: bath.thumbnail_url,
+            icon_url: bath.icon_url,
             modalId: "seasonalBathModal"
           }
         }
