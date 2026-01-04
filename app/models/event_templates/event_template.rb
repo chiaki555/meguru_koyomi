@@ -43,17 +43,19 @@ module EventTemplates
       fixed_variation || variable_variation(variable_date)
     end
 
-    # サムネイル（デフォルトあり）
+    # サムネイル
     def thumbnail_url
       return url_for(event_thumbnail) if event_thumbnail.attached?
 
-      "https://placehold.jp/80x80.png"
+      nil
     end
 
-    # アイコン（デフォルトなし）
+    # アイコン
     def icon_url
       icon = event_icons.first
-      url_for(icon) if icon&.attached?
+      return url_for(icon) if icon&.attached?
+
+      nil
     end
 
     private

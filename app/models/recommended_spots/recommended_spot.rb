@@ -19,15 +19,14 @@ module RecommendedSpots
     def thumbnail_url
       return url_for(thumbnail) if recommended_spot_thumbnail.attached?
 
-      "https://placehold.jp/80x80.png"
+      nil
     end
 
     def for_modal
       {
         name: name,
         url: spot_url,
-        image_url: recommended_spot_thumbnail&.url,
-        placeholder: false
+        image_url: thumbnail_url
       }
       end
   end

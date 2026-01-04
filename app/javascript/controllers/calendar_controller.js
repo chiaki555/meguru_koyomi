@@ -48,7 +48,6 @@ export default class extends Controller {
 
   // サイドバー更新
   updateSidebar() {
-    console.log("updateSidebar called")
     this.updateMonthlyBaths()
     this.updateTodayOrNextEvent()
   }
@@ -180,7 +179,6 @@ export default class extends Controller {
   // データ取得
   async fetchEvents(info, successCallback, failureCallback) {
     try {
-      console.log("fetchEvents start")
       const res = await fetch("/homes.json")
       const data = await res.json()
       console.log("fetchEvents start")
@@ -194,11 +192,7 @@ export default class extends Controller {
   }
 
   // モーダルを開く
-  openModalFromEvent(event) {   
-    console.log("event object:", event)
-    console.log("extendedProps:", event.extendedProps)
-    console.log("foods:", event.extendedProps?.foods)
-    console.log("spots:", event.extendedProps?.spots)
+  openModalFromEvent(event) {
  
     const modal = document.getElementById(event.extendedProps.modalId)
     if (!modal) return
@@ -218,7 +212,7 @@ export default class extends Controller {
     if (event.extendedProps.type === "event") {
       const thumb = modal.querySelector(".js-event-thumbnail")
       if (thumb) {
-        thumb.src = event.extendedProps.thumbnail_url
+        thumb.src = event.extendedProps.thumbnail_url || "https://placehold.jp/80x80.png"
         thumb.classList.add("modal-event-thumbnail")
         thumb.classList.remove("d-none")
       }
@@ -227,56 +221,98 @@ export default class extends Controller {
       const foodsEl = modal.querySelector(".js-modal-foods")
       if (foodsEl) {
         foodsEl.innerHTML = "";
-        (event.extendedProps.foods || []).forEach(food => {
-          const item = document.createElement("div")
-          item.className = "d-flex align-items-center"
+
+        const foods = event.extendedProps.foods || []
+        
+        if (foods.length === 0) {
+          const p = document.createElement("p")
+          p.className = "text-muted"
+          p.textContent = "該当なし"
+          foodsEl.appendChild(p)
+        } else {
+
+        foods.forEach(food => {
+          const li = document.createElement("li")
+          li.className = "row align-items-center"
 
           // 左：画像
+          const colImg = document.createElement("div")
+          colImg.className = "col-6"
+
           const img = document.createElement("img")
-          img.src = food.thumbnail_url
+          img.src = food.thumbnail_url || "https://placehold.jp/80x80.png"
           img.classList.add("modal-food-thumbnail")
 
+          colImg.appendChild(img)
+
           // 右：名前
-          const text = document.createElement("p")
+          const colText = document.createElement("div")
+          colText.className = "col-6"
+
+          const text = document.createElement("span")
           text.textContent = food.name
 
-          item.appendChild(img)
-          item.appendChild(text)
+          colText.appendChild(text)
 
-          foodsEl.appendChild(item)
+          li.appendChild(colImg)
+          li.appendChild(colText)
+
+          foodsEl.appendChild(li)
         })
       }
+    }
 
       // おすすめスポット
       const spotsEl = modal.querySelector(".js-modal-spots")
       if (spotsEl) {
         spotsEl.innerHTML = "";
-        (event.extendedProps.spots || []).forEach(spot => {
-          const item = document.createElement("div")
-          item.className = "d-flex align-items-center"
+
+        const spots = event.extendedProps.spots || []
+        
+        if (spots.length === 0) {
+          const li = document.createElement("li")
+          li.className = "text-muted"
+          li.textContent = "該当なし"
+          spotsEl.appendChild(li)
+        } else {
+
+        spots.forEach(spot => {
+          const li = document.createElement("li")
+          li.className = "row align-items-center"
 
           // 左: 画像
+          const colImg = document.createElement("div")
+          colImg.className = "col-6"
+
           const img = document.createElement("img")
-          img.src = spot.image_url
+          img.src = spot.image_url || "https://placehold.jp/80x80.png"
           img.classList.add("modal-spot-thumbnail")
 
+          colImg.appendChild(img)
+
           // 右: 名前
-          const text = document.createElement("p")
+          const colText = document.createElement("div")
+          colText.className = "col-6"
+
+          const text = document.createElement("span")
           text.textContent = spot.name
 
-          item.appendChild(img)
-          item.appendChild(text)
+          colText.appendChild(text)
 
-          spotsEl.appendChild(item)
+          li.appendChild(colImg)
+          li.appendChild(colText)
+
+          spotsEl.appendChild(li)
         })
       }
     }
+  }
 
     // 季節湯
     if (event.extendedProps.type === "bath") {
       const thumb = modal.querySelector(".js-modal-thumbnail")
       if (thumb) {
-        thumb.src = event.extendedProps.thumbnail_url
+        thumb.src = event.extendedProps.thumbnail_url || "https://placehold.jp/80x80.png"
         thumb.classList.add("modal-bath-thumbnail")
         thumb.classList.remove("d-none")
       }

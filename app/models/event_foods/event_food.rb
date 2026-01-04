@@ -24,7 +24,7 @@ module EventFoods
     def thumbnail_url
       return url_for(thumbnail) if event_food_thumbnail.attached?
 
-      "https://placehold.jp/80x80.png"
+      nil
     end
   end
 end

@@ -11,17 +11,9 @@ module EventFoods
     end
 
     def for_modal
-      if unique.empty?
-      [
-        {
-          name: "該当なし",
-          thumbnail_url: nil,
-          placeholder: true
-        }
-      ]
-      else
-        unique.map(&:for_modal)
-      end
+      return [] if unique.empty?
+
+      unique.map(&:for_modal)
     end
 
     private

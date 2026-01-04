@@ -32,17 +32,19 @@ module SeasonalBaths
       )
     end
 
-    # サムネイル（デフォルトあり）
+    # サムネイル
     def thumbnail_url
       return url_for(bath_thumbnail) if bath_thumbnail.attached?
 
-      "https://placehold.jp/80x80.png"
+      nil
     end
 
-    # アイコン（デフォルトなし）
+    # アイコン
     def icon_url
       icon = bath_icons.first
-      url_for(icon) if icon&.attached?
+      return url_for(icon) if icon&.attached?
+
+      nil
     end
   end
 end

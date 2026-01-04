@@ -11,18 +11,9 @@ module RecommendedSpots
     end
 
     def for_modal
-      if unique.empty?
-      [
-        {
-          name: "該当なし",
-          url: nil,
-          image_url: nil,
-          placeholder: true
-        }
-      ]
-      else
-        unique.map(&:for_modal)
-      end
+      return [] if unique.empty?
+
+      unique.map(&:for_modal)
     end
 
     private
