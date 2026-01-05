@@ -1,6 +1,8 @@
 require "google/cloud/storage"
 require "stringio"
 
+return unless ENV["ON_RENDER"] == "true"
+
 # ----- GCS 認証 -----
 service_account_path = Rails.root.join("tmp/service_account.json")
 
