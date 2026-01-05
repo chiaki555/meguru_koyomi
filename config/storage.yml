@@ -9,8 +9,7 @@ local:
 google_prod:
   service: GCS
   project: "meguru-koyomi" # Google Cloud 上のプロジェクト ID
-  credentials: |
-    <%= ENV["GOOGLE_APPLICATION_CREDENTIALS_JSON"] %>
+  credentials: <%= ENV.fetch("GOOGLE_APPLICATION_CREDENTIALS_JSON") %>
   bucket: "meguru_koyomi-<%= Rails.env %>"
   cache_control: "public, max-age=3600"
 
