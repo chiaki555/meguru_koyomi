@@ -16,6 +16,6 @@ require_relative "seeds/db_create_records"
 require_relative "seeds/db_create_date_baths"
 require_relative "seeds/db_create_date_events"
 
-if Rails.env.production? || Rails.env.development?
+if Rails.env.production?
   require_relative "seeds/gcs_attach"
 end
