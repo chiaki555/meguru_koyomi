@@ -1,6 +1,8 @@
 require "google/cloud/secret_manager"
 require "fileutils"
 
+return unless ENV["ON_RENDER"] == "true"
+
 FileUtils.mkdir_p("tmp") unless Dir.exist?("tmp")
 
 # Secret Manager クライアントを作成

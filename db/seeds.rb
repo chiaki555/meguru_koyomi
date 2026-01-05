@@ -8,7 +8,7 @@
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
 
-if Rails.env.production?
+if Rails.env.production? && ENV["ON_RENDER"] == "true"
   require_relative "seeds/setup_secret"
 end
 
@@ -16,6 +16,6 @@ require_relative "seeds/db_create_records"
 require_relative "seeds/db_create_date_baths"
 require_relative "seeds/db_create_date_events"
 
-if Rails.env.production?
+if Rails.env.production? && ENV["ON_RENDER"] == "true"
   require_relative "seeds/gcs_attach"
 end
