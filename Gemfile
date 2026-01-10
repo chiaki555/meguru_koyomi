@@ -43,7 +43,7 @@ gem "thruster", require: false
 gem "image_processing", "~> 1.2"
 
 # 手動で追加
-gem "active_model_serializers", "~> 0.10.0"
+gem "active_model_serializers", "~> 0.10.16"
 
 gem "google-cloud-storage", "~> 1.57"
 gem "google-cloud-secret_manager"
