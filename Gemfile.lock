@@ -141,7 +141,7 @@ GEM
       faraday-net_http (>= 2.0, < 3.5)
       json
       logger
-    faraday-follow_redirects (0.4.0)
+    faraday-follow_redirects (0.5.0)
       faraday (>= 1, < 3)
     faraday-net_http (3.4.2)
       net-http (~> 0.5)
@@ -182,7 +182,7 @@ GEM
       retriable (~> 3.1)
     google-apis-iamcredentials_v1 (0.26.0)
       google-apis-core (>= 0.15.0, < 2.a)
-    google-apis-storage_v1 (0.57.0)
+    google-apis-storage_v1 (0.58.0)
       google-apis-core (>= 0.15.0, < 2.a)
     google-cloud-core (1.8.0)
       google-cloud-env (>= 1.0, < 3.a)
@@ -202,7 +202,7 @@ GEM
       google-cloud-errors (~> 1.0)
       google-cloud-location (~> 1.0)
       grpc-google-iam-v1 (~> 1.11)
-    google-cloud-storage (1.57.1)
+    google-cloud-storage (1.58.0)
       addressable (~> 2.8)
       digest-crc (~> 0.4)
       google-apis-core (>= 0.18, < 2)
@@ -288,7 +288,7 @@ GEM
       activesupport (>= 7.0.0)
     jsbundling-rails (1.3.1)
       railties (>= 6.0.0)
-    json (2.16.0)
+    json (2.18.0)
     jsonapi-renderer (0.2.2)
     jwt (3.1.2)
       base64
@@ -321,8 +321,8 @@ GEM
     mini_mime (1.1.5)
     minitest (5.26.1)
     msgpack (1.8.0)
-    multi_json (1.17.0)
-    net-http (0.8.0)
+    multi_json (1.19.1)
+    net-http (0.9.1)
       uri (>= 0.11.1)
     net-imap (0.5.12)
       date
@@ -379,7 +379,7 @@ GEM
     psych (5.2.6)
       date
       stringio
-    public_suffix (7.0.0)
+    public_suffix (7.0.2)
     puma (7.1.0)
       nio4r (~> 2.0)
     raabro (1.4.0)
@@ -576,7 +576,7 @@ DEPENDENCIES
   faker
   foreman
   google-cloud-secret_manager
-  google-cloud-storage (~> 1.57)
+  google-cloud-storage (~> 1.58)
   holiday_jp
   image_processing (~> 1.2)
   jbuilder
